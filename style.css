@@ -1,10 +1,10 @@
-/* *{
+*{
     font-family:'Courier New', Courier, monospace;
 }
 
 body {
     background: linear-gradient(180deg, rgba(138,3,149,1) 0%, rgba(34,4,89,1) 50%, rgba(138,3,149,1) 100%);
-} */
+}
 
 .firstGame{
     display:none;
