@@ -69,8 +69,6 @@ for (let i = 0; i < squareShips.length; i++) {
         }
     });
 }
-
-
 document.querySelector('.panelBattle').addEventListener('click',startBattle)
 
 

@@ -14,21 +14,78 @@ const poleTop = document.querySelector('.yourPole').offsetTop
 const poleBottom = poleTop+600;
 const poleLeft = document.querySelector('.yourPole').offsetLeft
 const poleRight = poleLeft+600;
+const listOfNear = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,0],[0,1],[1,-1],[1,0],[1,1]]
+
 
 createShips()
 addShips()
 createEnemy()
+appendEnemyShips()
 // addEnemyShips()
 
 const squareShips = document.querySelectorAll('.poleShip')
 
+
+function appendEnemyShips(){
+    const listOfEnemyShips = [4,3,3,2,2,2,1,1,1,1]
+    for (let i = 0; i < listOfEnemyShips.length; i++){
+        let ok = true
+        while (ok){
+            let number = randomInt(10).toString()+randomInt(10).toString()
+            let NUM = enDivShips['enDiv'+number][1]
+            console.log(checkEnemy(listOfEnemyShips[i],number));
+            if (checkEnemy(listOfEnemyShips[i],number) && !NUM) {
+                console.log(i);
+                for (let count = 0; count < i; count++) {
+                    number = (Number(number[0]) + count) + number[1]
+                    if (number.length == 2) {
+                        enDivShips['enDiv'+number][1] = 1
+                    } 
+                }
+                ok = false
+            }
+            
+        }
+        
+    }
+}
+
+function checkEnemy(num,divs) {
+    const divList = []
+    for (let i = 0; i < num; i++) {
+        divList.push((Number(divs[0]) + i) + divs[1])
+    }
+    console.log(divList);
+    for (let div in divList) {
+        for (let i in listOfNear) {
+            checkedNumber = (Number(divList[div][0]) + listOfNear[i][0]).toString() + (Number(divList[div][1]) + listOfNear[i][1]).toString();
+            if (checkedNumber.length == 2) {
+                for (let b in enDivShips['enDiv'+checkedNumber]) {
+                    if (enDivShips['enDiv'+checkedNumber]) {
+                        if (enDivShips['enDiv'+checkedNumber][1] == 1 && !(divList.includes(checkedNumber))) {
+                            console.log('Единица уже стояла: ',enDivShips['enDiv'+checkedNumber][1] == 1);
+                            console.log('Уже было такое значение ', !(divList.includes(checkedNumber)));
+                            return false
+                        }
+                    }
+                    if (divList[div].length != 2) {
+                        console.log('Неподходящая длина', divList[div].length != 2);
+                        return false
+                    }
+                }
+                
+            }
+        }
+    }
+    return true
+}
 
 function createShips() {
     for (let i = 0;i<10;i++){
         divShips['row'+i]=document.createElement('div');
         divShips['row'+i].classList.add('row')
         for (let b = 0;b<10;b++) {
-            divShips['div'+i+b]=[document.createElement('div'),0];
+            divShips['div'+i+b]=[document.createElement('div'),0,0];
             divShips['div'+i+b][0].classList.add('squareShips','div'+i+b);
             divShips['row'+i].appendChild(divShips['div'+i+b][0]);
         }
@@ -42,8 +99,8 @@ function createEnemy() {
         enDivShips['row'+i]=document.createElement('div');
         enDivShips['row'+i].classList.add('row')
         for (let b = 0;b<10;b++) {
-            enDivShips['enDiv'+i+b]=[document.createElement('div'),0];
-            enDivShips['enDiv'+i+b][0].classList.add('squareShips','enDiv'+i+b);
+            enDivShips['enDiv'+i+b]=[document.createElement('div'),0,0];
+            enDivShips['enDiv'+i+b][0].classList.add('enemyShips','enDiv'+i+b);
             enDivShips['row'+i].appendChild(enDivShips['enDiv'+i+b][0]);
         }
         enemyPole.appendChild(enDivShips['row'+i])
@@ -98,6 +155,7 @@ function putMouseOnShip(ev) {
         }
         ship.length = 0
         divShips['div'+block][0].style.zIndex = '0'
+        returnBack(ev)
     }
     
 }
@@ -131,11 +189,13 @@ function checkCoords(arrayCurCords,ev) {
 }
 
 function returnBack(ev) {
+    console.log('ok');
     ev.target.style.position = 'static';
     ev.target.style.margin = '20px auto';
     put = 0;
     document.querySelector('.chooseShips').appendChild(ev.target);
     ev.target.style.zIndex = '0'
+    isGoToMouse = 0
 }
 
 function getCoords(elem) {
@@ -177,18 +237,18 @@ function checkShipsNear(ev) {
     // const block = div[0].classList[1].slice(-2);
     const ship = ev.target.classList[2].slice(-2).toString()
     let checkedNumber
-    const listOfNear = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,0],[0,1],[1,-1],[1,0],[1,1]]
-    for (let poleship in poleShips[ship][0]) {
+    const pole = poleShips[ship][0]
+    for (let poleship in pole) {
         for (let i in listOfNear) {
-            checkedNumber = (Number(poleShips[ship][0][poleship][0]) + listOfNear[i][0]).toString() + (Number(poleShips[ship][0][poleship][1]) + listOfNear[i][1]).toString();
+            checkedNumber = (Number(pole[poleship][0]) + listOfNear[i][0]).toString() + (Number(pole[poleship][1]) + listOfNear[i][1]).toString();
             if (checkedNumber.length == 2) {
                 for (let b in divShips['div'+checkedNumber]) {
                     if (divShips['div'+checkedNumber]) {
-                        if (divShips['div'+checkedNumber][1] == 1 && !(poleShips[ship][0].includes(checkedNumber))) {
+                        if (divShips['div'+checkedNumber][1] == 1 && !(pole.includes(checkedNumber))) {
                             return false
                         }
                     }
-                    if (poleShips[ship][0][poleship].length != 2) {
+                    if (pole[poleship].length != 2) {
                         return false
                     }
                 }

@@ -124,6 +124,15 @@ body {
     background-color: rgba(226, 226, 226);
 }
 
+.enemyShips {
+    position: relative;
+    width:60px;
+    height:60px;
+    outline: 1px solid rgb(21, 169, 238);
+    background-color: rgba(226, 226, 226);
+}
+
+
 .poleShip1 {
     width:60px;
     height: 60px;
