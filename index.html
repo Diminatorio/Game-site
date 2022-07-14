@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="fullContent">
+        <div class="buttonPlacer">
+            <button class="game game1">Знайди квадрат</button>
+            <button class="game game2">Морський бій</button>
+            <br>
+            <button class="game game3">Хрестики-Нолики</button>
+            <button class="game game4">Сапер</button>
+            <br>
+        </div>
+        
+    </div>
+    <div class="firstGame">
+        <button id="endGame1">End</button>
+        <div class="plita">
+            <div class="startPlita">
+                <h2 id = "labelStartInterval">Гра іде</h2>
+            </div>
+            <div class="square600"></div>
+            <h2 id = 'gameGoing'>Гра іде</h2>
+        </div>
+    </div>
+    <div class="secondGame" style="display:none">
+        <button class="endGame2">End</button>
+        <div class="battleContent">
+            <button class="startButton" style="margin:20px">Hello</button>
+            <div class="centerContentBattle">
+                <div class="yourPole"></div>
+                <div class="chooseShips"></div>
+                <div class="enemyPole" style="display:none"></div>
+            </div>
+            <button class="panelBattle">Start</button>
+        </div>
+    </div>
+    <div class="thirdGame" style="display:none">
+        <button class="endGame3">End</button>
+        <div class="TicTacContent">
+            <h1 id = 'isTicTacGoing' style="color:white">Гра іде</h1>
+            <div class="TicTacField">
+                <div class="row row1">
+                    <div class="place place1 place1 place1"></div>
+                    <div class="place place1 place2 place2"></div>
+                    <div class="place place1 place3 place3"></div>
+                </div>
+                <div class="row row2">
+                    <div class="place place2 place1 place4"></div>
+                    <div class="place place2 place2 place5"></div>
+                    <div class="place place2 place3 place6"></div>
+                </div>
+                <div class="row row3">
+                    <div class="place place3 place1 place7"></div>
+                    <div class="place place3 place2 place8"></div>
+                    <div class="place place3 place3 place9"></div>
+                </div> 
+            </div>
+            <button class="startTicTac">Почати</button>
+            <div class="choosePlayer">
+                <div class = 'choosePlayerBorder' id="ticTacX"><span>X</span></div>
+                <div id="ticTacO"><span>O</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="forthGame" style="display:none">
+        <button class="endGame4">End</button>
+        <div class="glanderContent">
+            <h1 id = "isGoing" style = "color:white">Гра іде</h1>
+            <div class="glanderField"></div>
+            <div class="bombsButtons">
+                <button class="startGlandersAgain">Почати</button>
+                <h1 id = 'countFlags' style = 'color:white'>Кількість флагів: 20</h1>
+            </div>
+        </div>
+    </div>
+    <!-- Морський Бій, знайди квадрат, сапер, Хрестики-Нолики -->
+    <script src="findCube.js"></script>
+    <script src="mineSweeper.js"></script>
+    <script src="tic-tac-toe.js"></script>
+    <script src="battleship.js"></script>
+    <script src="main.js"></script>
+</body>
+</html> 
