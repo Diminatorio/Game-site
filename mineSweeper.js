@@ -21,6 +21,7 @@ function appendBombs(bombs){
             number = randomInt(10).toString()+randomInt(10).toString()
             if (dictMineBombs[number][0] != 'bomb'){
                 dictMineBombs[number][0] = 'bomb'
+                ok = false
             }
         }
         
