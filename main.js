@@ -59,17 +59,22 @@ document.querySelector('.endGame4').addEventListener('click',endGameMineSweeper)
 
 for (let i = 0; i < squareShips.length; i++) {
     squareShips[i].addEventListener('mousedown',(ev)=>{
+        console.log(ev);
         if (!isChoosed) {
             if (ev.target.classList[0] == 'poleShip'){
                 putMouseOnShip(ev)
-                targetted = 1
                 document.addEventListener('mousemove',move)
                 document.addEventListener('mouseup',mouseUp)
             }
         }
     });
 }
+
 document.querySelector('.panelBattle').addEventListener('click',startBattle)
+
+for (let i = 0; i < squareShipsEnemy.length; i++) {
+    squareShipsEnemy[i].addEventListener('click',enemyFight)
+} 
 
 
 

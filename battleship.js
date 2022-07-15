@@ -8,6 +8,9 @@ let isGoToMouse = 0
 let movingShip
 let put
 let targeted
+let afterGame = false
+window.wasShot = false
+window.shotNumber = 0
 let isChoosing = true
 let isChoosed = false;
 const poleTop = document.querySelector('.yourPole').offsetTop
@@ -15,15 +18,16 @@ const poleBottom = poleTop+600;
 const poleLeft = document.querySelector('.yourPole').offsetLeft
 const poleRight = poleLeft+600;
 const listOfNear = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,0],[0,1],[1,-1],[1,0],[1,1]]
-
+let battleShipGame = false
+const startButton = document.querySelector('.startButton')
 
 createShips()
 addShips()
 createEnemy()
 appendEnemyShips()
-// addEnemyShips()
-
-const squareShips = document.querySelectorAll('.poleShip')
+const allShips = document.querySelectorAll('.squareShips')
+let squareShips = document.querySelectorAll('.poleShip')
+const squareShipsEnemy = document.querySelectorAll('.enemyShips')
 
 
 function appendEnemyShips(){
@@ -33,11 +37,12 @@ function appendEnemyShips(){
         while (ok){
             let number = randomInt(10).toString()+randomInt(10).toString()
             let NUM = enDivShips['enDiv'+number][1]
-            console.log(checkEnemy(listOfEnemyShips[i],number));
-            if (checkEnemy(listOfEnemyShips[i],number) && !NUM) {
-                console.log(i);
-                for (let count = 0; count < i; count++) {
-                    number = (Number(number[0]) + count) + number[1]
+            // console.log(checkEnemy(listOfEnemyShips[i],number));
+            const divList = checkEnemy(listOfEnemyShips[i],number);
+            if (divList && !NUM) {
+                for (let count in divList) {
+                    // number = (Number(number[0]) + count) + number[1]
+                    number = divList[count]
                     if (number.length == 2) {
                         enDivShips['enDiv'+number][1] = 1
                     } 
@@ -55,7 +60,6 @@ function checkEnemy(num,divs) {
     for (let i = 0; i < num; i++) {
         divList.push((Number(divs[0]) + i) + divs[1])
     }
-    console.log(divList);
     for (let div in divList) {
         for (let i in listOfNear) {
             checkedNumber = (Number(divList[div][0]) + listOfNear[i][0]).toString() + (Number(divList[div][1]) + listOfNear[i][1]).toString();
@@ -77,7 +81,7 @@ function checkEnemy(num,divs) {
             }
         }
     }
-    return true
+    return divList
 }
 
 function createShips() {
@@ -128,6 +132,7 @@ function addShips() {
 
 function putMouseOnShip(ev) {
     const ship = poleShips[ev.target.classList[2].slice(-2)][0]
+    console.log(ship);
     const shipNumber = ev.target.classList[2].slice(-2)
     if (!ship.length){
         ev.target.style.position = 'absolute';
@@ -135,9 +140,6 @@ function putMouseOnShip(ev) {
         isGoToMouse = ev.target.classList[2].slice(-2)
         movingShip = document.querySelector(`.poleShip${isGoToMouse}`)
     } else {
-        // console.log(divShips['div'+shipNumber]);
-        // console.log(shipNumber);
-        // console.log(poleShips[shipNumber]);
         divShips['div'+poleShips[shipNumber][0][0]][0].removeChild(ev.target)
         document.querySelector('.chooseShips').appendChild(ev.target)
         
@@ -146,7 +148,6 @@ function putMouseOnShip(ev) {
         const shipNumb = shipNum[0]
         
         const block = poleShips[shipNumber][0][0]
-        console.log(block);
         for (let i = 0; i < shipNumb; i++) {
             currentShip = Number(block[0])+i+block[1].toString()
             if (divShips['div'+currentShip]) {
@@ -189,7 +190,6 @@ function checkCoords(arrayCurCords,ev) {
 }
 
 function returnBack(ev) {
-    console.log('ok');
     ev.target.style.position = 'static';
     ev.target.style.margin = '20px auto';
     put = 0;
@@ -288,10 +288,36 @@ function checkChoosing() {
 }
 
 function startBattle() {
-    if(!isChoosing) {
+    console.log(isChoosing);
+    console.log(isChoosed);
+    if(!isChoosing && !isChoosed) {
+        startButton.innerHTML = 'Гра іде'
         isChoosed = true
         document.querySelector('.chooseShips').style.display = 'none'
         enemyPole.style.display = 'block'
+        battleShipGame = true
+    }
+    if (afterGame) {
+        squareShips = document.querySelectorAll('.poleShip')
+        startButton.innerHTML = 'Вибір'
+        afterGame = false;
+        isChoosing = true;
+        isChoosed = false;
+        document.querySelector('.chooseShips').style.display = 'block';
+        enemyPole.style.display = 'none';
+        enDivShips.length = 0
+        divShips.length = 0
+        for (let i = 0; i < allShips.length; i++) {
+            allShips[i].style.background = 'rgba(228, 228, 228,0.6)'
+            allShips[i].remove()
+        }
+        for (let i = 0; i < squareShipsEnemy.length; i++) {
+            squareShipsEnemy[i].remove()
+        }
+        createShips()
+        addShips()
+        createEnemy()
+        appendEnemyShips()
     }
     
 }
@@ -307,3 +333,254 @@ function mouseUp(ev) {
 
 }
 
+function CheckUpAndDown() {
+    let curCount = 0
+    let mainCount = 0
+    let curNumber
+    while (true) {
+        curCount++
+        curNumber = Number(window.shotNumber[0]) + curCount + window.shotNumber[1];
+        if (curNumber && curNumber.length == 2){
+            if (!divShips['div'+curNumber][1]) {
+                mainCount++
+                console.log('Снизу есть',321);
+                break
+            }
+        } else {
+            break
+        }
+    }
+    curCount = 0
+    while (true) {
+        curCount--
+        curNumber = Number(window.shotNumber[0]) + curCount + window.shotNumber[1];
+        console.log(curNumber);
+        if (curNumber && curNumber.length == 2){
+            if (!divShips['div'+curNumber][1]) {
+                mainCount++
+                console.log('Сверху есть');
+                break
+            }
+        } else {
+            break
+        }
+    }
+    console.log(mainCount,376);
+    return mainCount
+}
+
+function divShotCheckUpAndDown() {
+    if (CheckUpAndDown().length != 2) {
+        console.log(window.shotNumber,382);
+        const divArray = []
+        let curNumber
+        let curCount = 0
+        let firstNum
+        let secondNum
+        curCount = -1
+        for (let i = 0; i < 4; i++) {
+            if (CheckUpAndDown()) {}
+            curNumber = Number(window.shotNumber[0]) + curCount + window.shotNumber[1];
+            if (curNumber.length == 2 && curNumber) {
+                if (!divShips['div'+curNumber][2]) {
+                    firstNum = curNumber
+                    divArray.push(firstNum);
+                    console.log(divShips['div'+curNumber][2],396);
+                    break
+                }
+            }
+            curCount--
+        }
+        curCount = 1
+        for (let i = 0; i < 4; i++) {
+            curNumber = Number(window.shotNumber[0]) + curCount + window.shotNumber[1];
+            if (curNumber.length == 2 && curNumber) {
+                if (!divShips['div'+curNumber][2]) {
+                    secondNum = curNumber
+                    divArray.push(secondNum);
+                    console.log(divShips['div'+curNumber][2]);
+                    break
+                }
+            } else {
+                break
+            }
+            curCount++
+        }
+        console.log(divArray);
+        return divArray
+    } else {
+        return false
+    }
+}
+
+function shuffled(array) {
+    let number = randomInt(1)
+    const ARRAY = []
+    if (number == 0) {
+        ARRAY.push(array[0])
+        ARRAY.push(array[1])
+    } else {
+        ARRAY.push(array[1])
+        ARRAY.push(array[0])
+    }
+    return ARRAY
+}
+
+function enemyShot() {
+    console.log('next');
+    console.log(window.shotNumber);
+    if (!window.wasShot) {
+        let divNumber
+        let ok = true
+        while (ok) {
+            divNumber = randomInt(10).toString()+randomInt(10).toString();
+            if (!divShips['div'+divNumber][2]) {
+                ok = false
+            }
+        }
+        if (divShips['div'+divNumber][1]) {
+            divShips['div'+divNumber][0].style.background = 'red'
+            
+            window.wasShot = true
+            divShips['div'+divNumber][2] = 1
+            window.shotNumber = divNumber;
+            console.log('firstGoal');
+            enemyShot()
+        } else {
+            divShips['div'+divNumber][2] = 1
+            divShips['div'+divNumber][0].style.background = 'yellow'
+        }
+    } else {
+        let arrayChecking = divShotCheckUpAndDown();
+        console.log('Длина:' +arrayChecking.length,483);
+        if (arrayChecking) {
+            console.log('TRUE1');
+            if (arrayChecking.length != 0) {
+                console.log('TRUE2');
+                ok = true;
+                console.log(arrayChecking,493);
+                let letGoUpNum
+                if (arrayChecking.length == 1) {
+                    letGoUpNum = arrayChecking[0]
+                    console.log('ok1');
+                } else if (arrayChecking.length == 2) {
+                    console.log('ok2');
+                    
+                    letGoUpNum = shuffled(arrayChecking)[0]
+                    console.log(letGoUpNum);
+                }
+                if (!letGoUpNum) {
+                    console.log('1');
+                }
+                console.log(letGoUpNum,506);
+                if (divShips['div'+letGoUpNum][1]) {
+                    divShips['div'+letGoUpNum][2] = 1;
+                    divShips['div'+letGoUpNum][0].style.background = 'red'
+                    window.wasShot = true
+                    console.log('goal');
+                    enemyShot()
+                } else {
+                    divShips['div'+letGoUpNum][2] = 1;
+                    divShips['div'+letGoUpNum][0].style.background = 'yellow'
+                    console.log('bad goal');
+                    window.wasShot = true
+                }
+            } else {
+                console.log('okk');
+                window.wasShot = false;
+                enemyShot()
+            }
+        }else {
+            console.log('okk');
+            window.wasShot = false;
+            enemyShot()
+        }
+    }
+}
+
+function checkWIN() {
+    let playerWin = true
+    let enemyWin = true
+    let num
+    for (let i = 0; i < squareShipsEnemy.length; i++) {
+        num = squareShipsEnemy[i].classList[1].slice(-2)
+        console.log(num);
+        if (enDivShips['enDiv'+num][1] && !enDivShips['enDiv'+num][2]) {
+            playerWin = false;
+            break
+        }
+    }
+    for (let i = 0; i < allShips.length; i++) {
+        console.log(allShips[i].classList);
+        num = allShips[i].classList[1].slice(-2)
+        console.log(num);
+        if (divShips['div'+num][1] && !divShips['div'+num][2]) {
+            enemyWin = false;
+            break
+        }
+    }
+    if (playerWin) {
+        battleShipGame = false
+        return 1
+    }
+    if (enemyWin) {
+        battleShipGame = false
+        return 2
+    }
+    return 0
+}
+
+function killShip(num) {
+    if (!enDivShips['enDiv'+num][2]) {
+        if (enDivShips['enDiv'+num][1]) {
+            return 'shot'
+        } else {
+            return 'not shot'
+        }
+    } else {
+        return false
+    }
+}
+
+function enemyFight(ev) {
+    console.log(checkWIN());
+    let checkedWin = checkWIN()
+    console.log(checkedWin);
+    console.log(1);
+    console.log(battleShipGame);
+    let shipNumber = ev.target.classList[1].slice(-2)
+    if (battleShipGame) {
+        let isShot = killShip(shipNumber)
+        if (isShot) {
+            enDivShips['enDiv'+shipNumber][2] = 1
+            if (isShot == 'shot') {
+                ev.target.style.background = 'red'
+                return
+            } else {
+                ev.target.style.background = 'yellow'
+            }
+            enemyShot()
+            
+        }else {
+            if (checkedWin) {
+                if (checkedWin == 1) {
+                    startButton.innerHTML = 'Ви виграли!'
+                }else {
+                    startButton.innerHTML = 'Ви програли!'
+                }
+                afterGame = true
+            }
+    
+        }
+    }else {
+        if (checkedWin) {
+            if (checkedWin == 1) {
+                startButton.innerHTML = 'Ви виграли!'
+            }else {
+                startButton.innerHTML = 'Ви програли!'
+            }
+            afterGame = true
+        }
+
+    }
+}
