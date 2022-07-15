@@ -59,16 +59,32 @@ document.querySelector('.endGame4').addEventListener('click',endGameMineSweeper)
 
 for (let i = 0; i < squareShips.length; i++) {
     squareShips[i].addEventListener('mousedown',(ev)=>{
-        console.log(ev);
-        if (!isChoosed) {
-            if (ev.target.classList[0] == 'poleShip'){
-                putMouseOnShip(ev)
-                document.addEventListener('mousemove',move)
-                document.addEventListener('mouseup',mouseUp)
-            }
+        console.log(!(window.isChoosed),61);
+        if (!(window.isChoosed)) {
+            squareShips = document.querySelectorAll('.poleShip')
+            console.log(window.isChoosed);
+            
+                console.log(ev.target.classList[0] == 'poleShip');
+                console.log(1);
+                if (ev.target.classList[0] == 'poleShip'){
+                    putMouseOnShip(ev)
+                    document.addEventListener('mousemove',move)
+                    document.addEventListener('mouseup',mouseUp)
+                }
         }
     });
 }
+
+
+document.querySelector('.game2').addEventListener('click',()=>{
+    document.querySelector('.fullContent').style.display = 'none';
+    document.querySelector('.secondGame').style.display = 'block';
+})
+
+document.querySelector('.endGame2').addEventListener('click',()=>{
+    document.querySelector('.fullContent').style.display = 'block';
+    document.querySelector('.secondGame').style.display = 'none';
+})
 
 document.querySelector('.panelBattle').addEventListener('click',startBattle)
 

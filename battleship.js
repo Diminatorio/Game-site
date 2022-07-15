@@ -12,11 +12,12 @@ let afterGame = false
 window.wasShot = false
 window.shotNumber = 0
 let isChoosing = true
-let isChoosed = false;
-const poleTop = document.querySelector('.yourPole').offsetTop
+window.isChoosed = false;
+const poleTop = 100
 const poleBottom = poleTop+600;
-const poleLeft = document.querySelector('.yourPole').offsetLeft
+const poleLeft = 426
 const poleRight = poleLeft+600;
+console.log(poleLeft);
 const listOfNear = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,0],[0,1],[1,-1],[1,0],[1,1]]
 let battleShipGame = false
 const startButton = document.querySelector('.startButton')
@@ -169,8 +170,10 @@ function move(ev) {
 
 function checkCoords(arrayCurCords,ev) {
     const curTop = arrayCurCords[1]
-    const curLeft = arrayCurCords[0]
+    const curLeft = arrayCurCords[0];
+    console.log(curLeft <= poleRight);
     if ((poleTop <= curTop) && (curTop <= poleBottom) && (poleLeft <= curLeft) && (curLeft <= poleRight)) {
+        console.log('IN');
         for (let i in divShips) {
             if (i.startsWith('div')) {
                 const top = divShips[i][0].offsetTop;
@@ -289,20 +292,19 @@ function checkChoosing() {
 
 function startBattle() {
     console.log(isChoosing);
-    console.log(isChoosed);
-    if(!isChoosing && !isChoosed) {
+    console.log(window.isChoosed);
+    if(!isChoosing && !window.isChoosed) {
         startButton.innerHTML = 'Гра іде'
-        isChoosed = true
+        window.isChoosed = true
         document.querySelector('.chooseShips').style.display = 'none'
         enemyPole.style.display = 'block'
         battleShipGame = true
     }
     if (afterGame) {
-        squareShips = document.querySelectorAll('.poleShip')
         startButton.innerHTML = 'Вибір'
         afterGame = false;
         isChoosing = true;
-        isChoosed = false;
+        window.isChoosed = false;
         document.querySelector('.chooseShips').style.display = 'block';
         enemyPole.style.display = 'none';
         enDivShips.length = 0
@@ -325,6 +327,7 @@ function startBattle() {
 function mouseUp(ev) {
     if (ev.target.classList[0] == 'poleShip') {
         checkedCoords = checkCoords(getCoords(ev),ev)
+        console.log(checkedCoords);
         if (checkedCoords) {
             deleteFromChoosen(ev,checkedCoords);
         }

@@ -61,8 +61,10 @@ body {
 .square100 {
     width:100px;
     height:100px;
-    outline: 1px dashed
+    outline: 1px dashed;
 }
+
+
 .startPlita {
     background: rgb(88, 150, 175);
     height: 40px;
