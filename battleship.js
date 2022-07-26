@@ -237,7 +237,6 @@ function putInPoles(ev,div) {
 }
 
 function checkShipsNear(ev) {
-    // const block = div[0].classList[1].slice(-2);
     const ship = ev.target.classList[2].slice(-2).toString()
     let checkedNumber
     const pole = poleShips[ship][0]
@@ -282,7 +281,6 @@ function deleteFromChoosen(ev, gottenDiv) {
 }
 
 function checkChoosing() {
-    console.log(document.querySelector('.chooseShips').childNodes.length);
     if (document.querySelector('.chooseShips').childNodes.length) {
         return true
     } else {
@@ -291,8 +289,6 @@ function checkChoosing() {
 }
 
 function startBattle() {
-    console.log(isChoosing);
-    console.log(window.isChoosed);
     if(!isChoosing && !window.isChoosed) {
         startButton.innerHTML = 'Гра іде'
         window.isChoosed = true
@@ -327,7 +323,6 @@ function startBattle() {
 function mouseUp(ev) {
     if (ev.target.classList[0] == 'poleShip') {
         checkedCoords = checkCoords(getCoords(ev),ev)
-        console.log(checkedCoords);
         if (checkedCoords) {
             deleteFromChoosen(ev,checkedCoords);
         }
@@ -346,7 +341,6 @@ function CheckUpAndDown() {
         if (curNumber && curNumber.length == 2){
             if (!divShips['div'+curNumber][1]) {
                 mainCount++
-                console.log('Снизу есть',321);
                 break
             }
         } else {
@@ -357,7 +351,6 @@ function CheckUpAndDown() {
     while (true) {
         curCount--
         curNumber = Number(window.shotNumber[0]) + curCount + window.shotNumber[1];
-        console.log(curNumber);
         if (curNumber && curNumber.length == 2){
             if (!divShips['div'+curNumber][1]) {
                 mainCount++
@@ -368,13 +361,11 @@ function CheckUpAndDown() {
             break
         }
     }
-    console.log(mainCount,376);
     return mainCount
 }
 
 function divShotCheckUpAndDown() {
     if (CheckUpAndDown().length != 2) {
-        console.log(window.shotNumber,382);
         const divArray = []
         let curNumber
         let curCount = 0
@@ -447,7 +438,6 @@ function enemyShot() {
             window.wasShot = true
             divShips['div'+divNumber][2] = 1
             window.shotNumber = divNumber;
-            console.log('firstGoal');
             enemyShot()
         } else {
             divShips['div'+divNumber][2] = 1
@@ -455,13 +445,9 @@ function enemyShot() {
         }
     } else {
         let arrayChecking = divShotCheckUpAndDown();
-        console.log('Длина:' +arrayChecking.length,483);
         if (arrayChecking) {
-            console.log('TRUE1');
             if (arrayChecking.length != 0) {
-                console.log('TRUE2');
                 ok = true;
-                console.log(arrayChecking,493);
                 let letGoUpNum
                 if (arrayChecking.length == 1) {
                     letGoUpNum = arrayChecking[0]
@@ -507,16 +493,13 @@ function checkWIN() {
     let num
     for (let i = 0; i < squareShipsEnemy.length; i++) {
         num = squareShipsEnemy[i].classList[1].slice(-2)
-        console.log(num);
         if (enDivShips['enDiv'+num][1] && !enDivShips['enDiv'+num][2]) {
             playerWin = false;
             break
         }
     }
     for (let i = 0; i < allShips.length; i++) {
-        console.log(allShips[i].classList);
         num = allShips[i].classList[1].slice(-2)
-        console.log(num);
         if (divShips['div'+num][1] && !divShips['div'+num][2]) {
             enemyWin = false;
             break
@@ -546,11 +529,7 @@ function killShip(num) {
 }
 
 function enemyFight(ev) {
-    console.log(checkWIN());
     let checkedWin = checkWIN()
-    console.log(checkedWin);
-    console.log(1);
-    console.log(battleShipGame);
     let shipNumber = ev.target.classList[1].slice(-2)
     if (battleShipGame) {
         let isShot = killShip(shipNumber)

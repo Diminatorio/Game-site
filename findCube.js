@@ -99,14 +99,14 @@ function ifChosen(ev){
     if (chosenAttempts && !isFound){
         if (ev.target.classList[1] == foundDiv) {
             
-            ev.target.style.background = 'green'
+            ev.target.style.backgroundColor = 'green'
             isFound = true
         } else {
             const color = checkColor(ev.target.classList[1].slice(-2))
             if (color){
-                ev.target.style.background = color
+                ev.target.style.backgroundColor = color
             }else{
-                ev.target.style.background = 'red'
+                ev.target.style.backgroundColor = 'red'
             }            
             chosenAttempts-=1
         }

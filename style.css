@@ -62,6 +62,7 @@ body {
     width:100px;
     height:100px;
     outline: 1px dashed;
+    transition: background-color 2s;
 }
 
 
@@ -161,7 +162,7 @@ body {
 }
 .poleShip {
     background-color: rgba(228, 228, 228,0.6);
-    border: 3px solid rgb(13, 154, 219);
+    border: 3px solid rgb(14, 155, 26);
     margin: 20px auto;
     box-sizing: border-box;
 }

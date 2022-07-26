@@ -59,13 +59,8 @@ document.querySelector('.endGame4').addEventListener('click',endGameMineSweeper)
 
 for (let i = 0; i < squareShips.length; i++) {
     squareShips[i].addEventListener('mousedown',(ev)=>{
-        console.log(!(window.isChoosed),61);
         if (!(window.isChoosed)) {
             squareShips = document.querySelectorAll('.poleShip')
-            console.log(window.isChoosed);
-            
-                console.log(ev.target.classList[0] == 'poleShip');
-                console.log(1);
                 if (ev.target.classList[0] == 'poleShip'){
                     putMouseOnShip(ev)
                     document.addEventListener('mousemove',move)
