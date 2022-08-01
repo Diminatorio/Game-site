@@ -8,7 +8,6 @@ const badResult = 'Ви програли!'
 const tieResult = 'Нічия!'
 
 function checkTicTac(){
-    console.log(dic);
     let isEnded = true
     for (const i in dictTicTac) {
         if (((dictTicTac[i][0]+dictTicTac[i][1]+dictTicTac[i][2]) == '111')
